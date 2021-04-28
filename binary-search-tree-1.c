@@ -30,6 +30,7 @@ Node* searchIterative(Node* head, int key);  /* search the node for the key */
 int freeBST(Node* head); /* free all memories allocated to the tree */
 
 /* you may add your own defined functions if necessary */
+int cnt;
 
 
 int main()
@@ -132,7 +133,7 @@ void inorderTraversal(Node* ptr) //중위 순회 함수
 	   if(ptr) //ptr이 NULL이 아니면 
 	   {
 	   	    inorderTraversal(ptr->left); //왼쪽  순회
-			printf("%d", ptr -> key); // 값 출력
+			printf("[%d]", ptr -> key); // 값 출력
 			inorderTraversal(ptr->right);//오른쪽 순회 
 	   }
 
@@ -142,7 +143,7 @@ void preorderTraversal(Node* ptr) //전위 순회 함수
 {
        if(ptr) //ptr이 NULL이 아니면 
 	   {
-	   	    printf("&d",ptr->key); // 먼저 값을 찍으면서 내려감 
+	   	    printf("[%d]",ptr->key); // 먼저 값을 찍으면서 내려감 
 	   	    preorderTraversal(ptr->left); //왼쪽 순회 
 	   	    preorderTraversal(ptr->right); //오른쪽 순회 
 		} 
@@ -154,7 +155,7 @@ void postorderTraversal(Node* ptr) //후위 순회 함수
 	   {
 	   	    postorderTraversal(ptr->left); //왼쪽 순회 
 			postorderTraversal(ptr->right); //오른쪽 순회 
-			printf("%d",ptr->key);  //키값 출력 
+			printf("[%d]",ptr->key);  //키값 출력 
 		} 
 }
 
@@ -212,7 +213,7 @@ int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 �
       Node* lead=NULL; // 탐색하는 노드의 위치 노드 
       Node* pre = NULL; // lead의 동작을 기억하는 포인터
       
-      find = head->left; // 루트노드 삽입
+      lead = head->left; // 루트노드 삽입
 	  
 	  if(lead = NULL) //트리에 노드가 없으면
 	  {
@@ -259,22 +260,69 @@ int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 �
 	   return 0; 
 }
 
-Node* searchRecursive(Node* ptr, int key) // 재귀적으로 동일한 키값을 같은 노드를 탐색한다 
+Node* searchRecursive(Node* ptr, int key) // 재귀적으로 동일한 키값을 갖는 노드를 탐색한다 
 {
        if (!ptr) // 트리가 비어있을 경우  
           return NULL; 
        
 	   else if (key == ptr->key) //키값과 동일한 값을 갖는 노드가 존재할 경우
-	      return ptr;   
+	      return ptr;  // ptr주소리턴
+	      
+	   else if (key < ptr->key) // 키값이 현재 노드보다 값이 작으면
+	      return searchRecursive(ptr->left,key); // 현재 노드의 왼쪽으로 가야하기때문에
+	      
+	   else 	   
+		  return searchRecursive(ptr->right,key); // 현재 노드의 오른쪽으로 가야하기 때문에 	   
 }
 
-Node* searchIterative(Node* head, int key)
+Node* searchIterative(Node* head, int key) // 반복방식으로 동일한 키값을 갖는 노드를 탐색한다 
 {
-    
+       Node* ptr = head->left; // head 자체가 넘어오므로 head left로 초기화 
+       
+       while(ptr) // 비어있지 않을때 까지 반복
+	   {
+	   	    if(key == ptr->key) //키값이 같은 경우
+			   return ptr; 
+			
+			else if(key < ptr->key) //키값이 작은 경우
+			   ptr = ptr->left; // 탐색노드 왼쪽으로 이동   
+			
+			else
+			   ptr = ptr->right; // 탐색노드 오른쪽으로 이동   
+		} 
+		
+		return NULL; //키와 동일한 값을 갖는 노드가 없으면 널값 리턴 
 }
 
 
 int freeBST(Node* head)
 {
-
+       Node *lead = NULL;
+       
+       if (cnt == 0) //루트노드로 시작 
+	   {
+	   	    lead = head->left;
+			cnt++; 
+		} 
+		
+		if(lead) //트리의 헤드가 비어있지 않으면
+		// 후위순회 방식으로 맨아래 리프노드에서 차례로 노드 동적할당 해제 
+		{
+			freeBST(lead->left);
+			freeBST(lead->right);
+			
+			if(lead->left != NULL)
+			    lead->left = NULL;
+			
+			else if ( lead->right != NULL)
+			    lead->right = NULL;
+			
+			free(lead); // 해당 노드 해제
+			return 0;	    
+		 } 
+       
+       free(head); //헤드 동적할당 해제
+	   
+	   return 0; 
 }
+
