@@ -131,42 +131,146 @@ void inorderTraversal(Node* ptr) //중위 순회 함수
 {
 	   if(ptr) //ptr이 NULL이 아니면 
 	   {
-	   	    inorderTraversal(ptr->left); //왼쪽 먼저 순회
-			printf("%d", ptr -> key); //값 출력
+	   	    inorderTraversal(ptr->left); //왼쪽  순회
+			printf("%d", ptr -> key); // 값 출력
 			inorderTraversal(ptr->right);//오른쪽 순회 
 	   }
 
 }
 
-void preorderTraversal(Node* ptr)
+void preorderTraversal(Node* ptr) //전위 순회 함수 
 {
-
+       if(ptr) //ptr이 NULL이 아니면 
+	   {
+	   	    printf("&d",ptr->key); // 먼저 값을 찍으면서 내려감 
+	   	    preorderTraversal(ptr->left); //왼쪽 순회 
+	   	    preorderTraversal(ptr->right); //오른쪽 순회 
+		} 
 }
 
-void postorderTraversal(Node* ptr)
+void postorderTraversal(Node* ptr) //후위 순회 함수 
 {
-
+       if(ptr) //ptr이 NULL이 아니면
+	   {
+	   	    postorderTraversal(ptr->left); //왼쪽 순회 
+			postorderTraversal(ptr->right); //오른쪽 순회 
+			printf("%d",ptr->key);  //키값 출력 
+		} 
 }
 
 
-int insert(Node* head, int key)
+int insert(Node* head, int key) //키값을 삽입하는 함수 
 {
-
+      Node* node = (Node*)malloc(sizeof(Node)); // 삽입될 노드 동적 할당
+	  Node* lead = head->left; // 트리내에서 움직을 포인터를 루트로 설정
+	  node->key=key; //새로만들 노드에 키값 삽입
+	  node->left = NULL; //초기 값 NULL로 세팅 
+	  node->right = NULL; 
+	  
+	  if(head->left ==NULL) // 트리가 비어있으면 root 노드가 없으면
+	  {
+	  	     head->left=node; //새로만든 노드 삽입
+			 return 0; //함수 탈출 
+	   } 
+	   
+	  while(lead) // 리드가 유효하면 (헤드노드 이외에 노드가 하나이상 있으면)
+	  {
+	  	    if(key == lead->key)  // 리드가 기리키는 노드의 키값과 일치할 경우 
+	  	        return 0;  
+	  	    else if(key < (lead->key))// 노드의 키값보다 작으면    
+	  	    {
+	  	        if(lead->left != NULL)// 리드의 다음위치가 비어있지 않으면 
+	  	        {
+	  	        	lead=lead->left; // 리드를 옮긴다 
+				  }
+				else // 리드의 다음위치가 비어있다면 
+				{
+					 lead->left=node; // 새로만든 노드 삽입
+					 return 0; //함수 탈출 
+				  }  
+			  }
+			
+			else if(key > (lead->key))//리드가 가리키는 노드 키값 보다 클 경우  
+			{
+				if(lead->right != NULL) // 리드의 다음위치가 비어있지 않으면 
+				{
+					lead=lead->right; //리드를 옮긴다 
+				}
+				else //리드의 다음위치가 비어있다면 
+				{
+				    lead->right=node; //그곳에 새로만든 노드 삽입
+					return 0; // 함수 탈출 
+				}
+			}
+	   } 
+	  
+	  return 0;
 }
 
-int deleteLeafNode(Node* head, int key)
+int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 갖는 노드를 삭제 
 {
-
+      Node* lead=NULL; // 탐색하는 노드의 위치 노드 
+      Node* pre = NULL; // lead의 동작을 기억하는 포인터
+      
+      find = head->left; // 루트노드 삽입
+	  
+	  if(lead = NULL) //트리에 노드가 없으면
+	  {
+	  	     printf("트리에 노드가 존재하지 않습니다. \n");
+			 return 0; //함수 탈출 
+	   } 
+	  
+	  
+	  while (lead) // 트리에 노드가 하나이상 있다면 
+	  {
+	  	    if((lead->key == key) && (lead->left=NULL) && (lead->right == NULL)) //key와 동일하고 리프노드일경우
+			{
+				  if(pre->key >= lead->key) // 현재노드가 이전노드보다 값이 작으면
+				      pre->left = NULL; // 현재 노드가 연결되었던 링크 NULL 로 초기화
+				  else
+				      pre->right = NULL; //현재 노드가 연결되었던 링크 NULL 로 초기화
+				  
+				  free(lead); //key와 동일한 필드를 갖는 노드를 삭제한다
+				  
+				  return 0;	  	   
+			 } 
+			 
+			else if (lead->key == key)// 키값과 같은 노드지만 리프노드가 아닌 경우의수
+			{
+				printf("이 값은 리프노드가 아닙니다.\n");
+				return 0; 
+			 } 
+			
+			else if (lead->key < key)// 키값이 현재 노드의 값보다 클 경우 
+			{
+				pre=lead; 
+				lead = lead->right; //현재노드의 오른쪽으로 이동 
+			}
+			
+		    else if (lead->key > key)// 키값이 현재 노드의 값 보다 작을 경우
+			{
+				pre=lead;
+				lead=lead->left; // 현재노드의 왼쪽으로 이동 
+			 } 
+	  }
+	 	  
+	   printf("입력한 값이 노드에 없습니다.\n");
+	   
+	   return 0; 
 }
 
-Node* searchRecursive(Node* ptr, int key)
+Node* searchRecursive(Node* ptr, int key) // 재귀적으로 동일한 키값을 같은 노드를 탐색한다 
 {
-
+       if (!ptr) // 트리가 비어있을 경우  
+          return NULL; 
+       
+	   else if (key == ptr->key) //키값과 동일한 값을 갖는 노드가 존재할 경우
+	      return ptr;   
 }
 
 Node* searchIterative(Node* head, int key)
 {
-
+    
 }
 
 
