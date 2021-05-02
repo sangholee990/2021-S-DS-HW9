@@ -224,7 +224,7 @@ int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 �
 	
 	  while (lead) // 트리에 노드가 하나이상 있다면 
 	  {
-	  	    if((lead->key == key) && (lead->left=NULL) && (lead->right == NULL)) //key와 동일하고 리프노드일경우
+	  	    if((lead->key == key) && (lead->left==NULL) && (lead->right == NULL)) //key와 동일하고 리프노드일경우
 			{
 				  if(pre->key >= lead->key) // 현재노드가 이전노드보다 값이 작으면
 				      pre->left = NULL; // 현재 노드가 연결되었던 링크 NULL 로 초기화
