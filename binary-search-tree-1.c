@@ -213,7 +213,6 @@ int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 �
       Node* lead=NULL; // 탐색하는 노드의 위치 노드 
       Node* pre = NULL; // lead의 동작을 기억하는 포인터
       
-      lead = head->left; // 루트노드 삽입
 	  
 	  if(lead = NULL) //트리에 노드가 없으면
 	  {
@@ -221,7 +220,8 @@ int deleteLeafNode(Node* head, int key) //키값을 입력받아 그키값을 �
 			 return 0; //함수 탈출 
 	   } 
 	  
-	  
+      lead = head->left; // 루트노드 삽입	  
+	
 	  while (lead) // 트리에 노드가 하나이상 있다면 
 	  {
 	  	    if((lead->key == key) && (lead->left=NULL) && (lead->right == NULL)) //key와 동일하고 리프노드일경우
