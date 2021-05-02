@@ -1,4 +1,4 @@
-/*
+*
  * Binary Search Tree #1
  *
  * Data Structures
@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+typedef struct node { //노드 구성 구조체 
 	int key;
 	struct node *left;
 	struct node *right;
 } Node;
 
-int initializeBST(Node** h);
+int initializeBST(Node** h); // 바이너리 서치 트리 초기화 함수 
 
 /* functions that you have to implement */
 void inorderTraversal(Node* ptr);	  /* recursive inorder traversal */
@@ -35,12 +35,12 @@ int cnt;
 
 int main()
 {
-	char command;
-	int key;
+	char command; // 사용자에게 커맨드 입력 받을 변수 선언 
+	int key; // 키값 변수 
 	Node* head = NULL;
 	Node* ptr = NULL;	/* temp */
 	
-	printf("[----- [이상호] [2018038016] -----]");
+	printf("[------- [이상호] [2018038016] -------]");
 
 	do{
 		printf("\n\n");
@@ -55,29 +55,29 @@ int main()
 		printf("----------------------------------------------------------------\n");
 
 		printf("Command = ");
-		scanf(" %c", &command);
+		scanf(" %c", &command); //사용자에게 커맨드 입력 받음 
 
 		switch(command) {
 		case 'z': case 'Z':
-			initializeBST(&head);
+			initializeBST(&head); // BST 초기화 
 			break;
 		case 'q': case 'Q':
-			freeBST(head);
+			freeBST(head); // 동적할당 해제 
 			break;
 		case 'n': case 'N':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			insert(head, key);
+			insert(head, key); // 입력받은 키값의 노드를 삽입 
 			break;
 		case 'd': case 'D':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			deleteLeafNode(head, key);
+			deleteLeafNode(head, key); // 단말노드 삭제 
 			break;
 		case 'f': case 'F':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			ptr = searchIterative(head, key);
+			ptr = searchIterative(head, key);  // 재귀호출 사용하지 않고 탐색 
 			if(ptr != NULL)
 				printf("\n node [%d] found at %p\n", ptr->key, ptr);
 			else
@@ -86,7 +86,7 @@ int main()
 		case 's': case 'S':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			ptr = searchRecursive(head->left, key);
+			ptr = searchRecursive(head->left, key); // 재귀호출을 통해 탐색 
 			if(ptr != NULL)
 				printf("\n node [%d] found at %p\n", ptr->key, ptr);
 			else
@@ -94,13 +94,13 @@ int main()
 			break;
 
 		case 'i': case 'I':
-			inorderTraversal(head->left);
+			inorderTraversal(head->left); //중위순회 
 			break;
 		case 'p': case 'P':
-			preorderTraversal(head->left);
+			preorderTraversal(head->left); // 전위순회 
 			break;
 		case 't': case 'T':
-			postorderTraversal(head->left);
+			postorderTraversal(head->left); // 후위순회 
 			break;
 		default:
 			printf("\n       >>>>>   Concentration!!   <<<<<     \n");
